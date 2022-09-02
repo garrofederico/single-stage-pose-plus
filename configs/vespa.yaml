@@ -1,0 +1,69 @@
+MODEL:
+  # BACKBONE: 'darknet_tiny'
+  BACKBONE: 'darknet53'
+  ANCHOR_SIZES: [32, 64, 128, 256, 512]
+  ANCHOR_STRIDES: [8, 16, 32, 64, 128]
+DATASETS:
+  TRAIN: './data/vespa/VESPA_1.0/training.txt'
+  # TRAIN: './data/vespa/estec_bop/TestPT.F.4.5.txt'
+  VALID: './data/vespa/VESPA_1.0/validation.txt'
+  # TRAIN: './data/vespa/estec_bop/ptf_all.txt'
+  # TRAIN: './data/vespa/estec_bop/ptf_all_plus_synt.txt'
+  # VALID: './data/vespa/estec_bop/TestPT.F.4.5.txt'
+  TEST: './data/vespa/VESPA_1.0/testing.txt'
+  # TEST: './data/vespa/estec_bop/TestPT.F.4.5.txt'
+  # TEST: './data/vespa/estec_bop/TestPI.F.2.2.txt'
+  # TEST: './data/vespa/estec_bop/TestPT.F.2.1.txt'
+  # TEST: './data/vespa/estec_bop/temp.txt'
+  MESH_DIR: './data/vespa/VESPA_1.0/models/'
+  BBOX_FILE: './data/vespa/VESPA_1.0/vespa_bbox.json'
+  MESH_DIAMETERS: [0.31]
+  N_CLASS: 2
+INPUT:
+  INTERNAL_WIDTH: 512
+  INTERNAL_HEIGHT: 512
+  INTERNAL_K: [303.7865161198519, 0, 256, 0, 303.7865161198519, 256, 0, 0, 1]
+  INTERNAL_K: [369.727975, 0, 256.77595, 0, 370.5649, 248.785225, 0, 0, 1]
+  #INTERNAL_WIDTH: 768
+  #INTERNAL_HEIGHT: 768
+  #INTERNAL_K: [554.5919625, 0, 385.163925, 0, 555.84735, 373.1778375, 0, 0, 1]
+  #INTERNAL_WIDTH: 1024
+  #INTERNAL_HEIGHT: 1024
+  #INTERNAL_K: [739.45595, 0, 513.5519, 0, 741.1298, 497.57045, 0, 0, 1]
+SOLVER:
+  IMS_PER_BATCH: 16
+  # 
+  BASE_LR: 0.001
+  MAX_ITER: 100000
+  # 
+  LOSS_WEIGHT_CLS: 0.1
+  # LOSS_WEIGHT_REG: 0.01
+  # LOSS_REG_TYPE: '2D'
+  LOSS_WEIGHT_REG: 1
+  LOSS_REG_TYPE: '3D'
+  POSITIVE_TYPE: 'SSC'
+  POSITIVE_LAMBDA: 1.0
+  REGRESSION_TYPE: 'POINT'
+  AUGMENTATION_SHIFT: 0.1
+  AUGMENTATION_SCALE: 0.1
+  AUGMENTATION_ROTATION: 45
+  AUGMENTATION_ColorH: 0.2
+  AUGMENTATION_ColorS: 0.5
+  AUGMENTATION_ColorV: 0.5
+  AUGMENTATION_Sharpen: 0
+  AUGMENTATION_Smooth: 0
+  AUGMENTATION_Noise: 0
+  AUGMENTATION_Grayscalize: True
+  # AUGMENTATION_SHIFT: 0.1
+  # AUGMENTATION_SCALE: 0.1
+  # AUGMENTATION_ROTATION: 45
+  # AUGMENTATION_ColorH: 0.2
+  # AUGMENTATION_ColorS: 0.5
+  # AUGMENTATION_ColorV: 0.5
+  # AUGMENTATION_Sharpen: 0
+  # AUGMENTATION_Smooth: 5
+  # AUGMENTATION_Noise: 0.1
+  # AUGMENTATION_BACKGROUND_DIR: './data/SUN2012pascalformat/JPEGImages/'
+TEST:
+  IMS_PER_BATCH: 8
+  CONFIDENCE_TH: 0.1

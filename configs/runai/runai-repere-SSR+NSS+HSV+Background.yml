@@ -1,0 +1,83 @@
+apiVersion: run.ai/v1
+kind: RunaiJob
+metadata:
+  name: garro-repere-plus-ssr-nss-hsv-background-90
+  labels:
+    user: garro
+    # priorityClassName: "build"
+spec:
+  template:
+    metadata:
+      labels:
+        app: physics-overlay
+        user: garro
+        priority: "0"
+    spec:
+      restartPolicy: Never
+      schedulerName: runai-scheduler
+      containers:
+        - name: perform-job
+          image: ic-registry.epfl.ch/cvlab/lis/lab-python-ml:cuda11
+          imagePullPolicy: Always
+          workingDir : "/cvlabdata2/cvlab/datasets_federico/single-stage-pose-plus"
+          command:
+#            - "/opt/lab/setup_and_wait.sh"
+            - "/opt/lab/setup_and_run_command.sh"
+            - "cd /cvlabdata2/cvlab/datasets_federico/single-stage-pose-plus &&
+               pip3 install trimesh &&
+               pip3 install tensorboardx &&
+               pip install transforms3d &&
+               pip install pyrender &&
+               pip install pyopengl &&
+               pip install wandb &&
+               sudo apt update &&
+               sudo apt-get install -y python-opengl &&
+               python3 train.py --config_file ./configs/train-on-repere-SSR+NSS+HSV+bg.yaml --num_workers 8 --working_dir './outputs/train-on-repere-SSR90+NSS+HSV+bg/'"
+
+          env:
+            - name: CLUSTER_USER
+              value: "garro" # set this
+            - name: CLUSTER_USER_ID # set this
+              value: "248795"
+            - name: CLUSTER_GROUP_NAME
+              value: "runai-cvlab#" #"CVLAB-unit" # 75544(runai-cvlab)
+            - name: CLUSTER_GROUP_ID
+              value: "75544"  #"11166"
+            - name: AUTO_SHUTDOWN_TIME
+              value: "8h"
+            - name: PYTHONUNBUFFERED
+              value: "1"
+            #- name: PYTHONPATH
+            # value: "/cvlabdata2/home/fua/code/pyt/util:/cvlabdata2/home/fua/code/pyt/math:/cvlabdata2/home/fua/code/pyt/math/linalg:/cvlabdata2/home/fua/code/pyt/math/optim:/cvlabdata2/home/fua/code/pyt/math/geom:/cvlabdata2/home/fua/code/pyt/learn:/cvlabdata2/home/fua/code/pyt/learn/percept:/cvlabdata2/home/fua/code/pyt/misc:/cvlabdata2/home/fua/code/pyt/misc/mnist:/cvlabdata2/home/fua/code/pyt/lib/python/:/cvlabdata2/home/fua/code/pyt"
+
+          volumeMounts:
+            - mountPath: /cvlabsrc1
+              name: cvlabsrc1
+            - mountPath: /cvlabdata1
+              name: cvlabdata1
+            - mountPath: /cvlabdata2
+              name: cvlabdata2
+            - mountPath: /dev/shm
+              name: dshm
+
+          # specify that it uses a GPU!
+          resources:
+            limits: # if only limits is specified, request equals to limits
+              nvidia.com/gpu: 1
+
+      volumes:
+        - name: cvlabsrc1
+          persistentVolumeClaim:
+            claimName: runai-pv-cvlabsrc1
+
+        - name: cvlabdata1
+          persistentVolumeClaim:
+            claimName: runai-pv-cvlabdata1
+
+        - name: cvlabdata2
+          persistentVolumeClaim:
+            claimName: runai-pv-cvlabdata2
+
+        - name: dshm
+          emptyDir:
+            medium: Memory

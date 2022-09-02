@@ -1,0 +1,34 @@
+MODEL:
+  BACKBONE: 'darknet53'
+  ANCHOR_SIZES: [32, 64, 128, 256, 512]
+  ANCHOR_STRIDES: [8, 16, 32, 64, 128]
+DATASETS:
+  TRAIN: '/cvlabdata2/cvlab/datasets_federico/Datasets/physic_overlay/Repere_2.0_37/training.txt'
+  VALID: '/cvlabdata2/cvlab/datasets_federico/Datasets/physic_overlay/Repere_2.0_37/validation.txt'
+  TEST: '/cvlabdata2/cvlab/datasets_federico/Datasets/physic_overlay/Repere_2.0_37/testing.txt'
+  MESH_DIR: '/cvlabdata2/cvlab/datasets_federico/Datasets/physic_overlay/Repere_2.0_37/models/'
+  BBOX_FILE: '/cvlabdata2/cvlab/datasets_federico/Datasets/physic_overlay/Repere_2.0_37/bbox.json'
+  MESH_DIAMETERS: [64.98]
+  N_CLASS: 2
+INPUT: # dimensions multiplied by 2 to increase performance
+  INTERNAL_WIDTH: 960
+  INTERNAL_HEIGHT: 540
+  INTERNAL_K: [520.72, 0, 470.412, 0, 517.92, 265.412, 0, 0, 1]
+SOLVER:
+  IMS_PER_BATCH: 8
+  #
+  BASE_LR: 0.01
+  STEPS_PER_EPOCH: 10000
+  MAX_ITER: 100000
+  SCHEDULER_POLICY: 'multi_steps'
+  SCHEDULER_PARAMS: {'steps': [50000, 70000], 'gamma': 0.1}
+  #
+  LOSS_WEIGHT_CLS: 0.01
+  LOSS_WEIGHT_REG: 0.1
+  POSITIVE_LAMBDA: 1.0
+  AUGMENTATION_SHIFT: 0.1
+  AUGMENTATION_SCALE: 0.1
+  AUGMENTATION_ROTATION: 180
+TEST:
+  IMS_PER_BATCH: 1
+  CONFIDENCE_TH: 0.3

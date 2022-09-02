@@ -1,0 +1,48 @@
+MODEL:
+  # BACKBONE: 'darknet_tiny'
+  BACKBONE: 'darknet53'
+  ANCHOR_SIZES: [32, 64, 128, 256, 512]
+  ANCHOR_STRIDES: [8, 16, 32, 64, 128]
+DATASETS:
+  TRAIN: '/cvlabdata2/cvlab/datasets_federico/Datasets/physic_overlay/Repere_2.0_37/training.txt'
+  VALID: '/cvlabdata2/cvlab/datasets_federico/Datasets/physic_overlay/Repere_2.0_37/validation.txt'
+  TEST: '/cvlabdata2/cvlab/datasets_federico/Datasets/physic_overlay/Repere_2.0_37/testing.txt'
+  MESH_DIR: '/cvlabdata2/cvlab/datasets_federico/Datasets/physic_overlay/Repere_2.0_37/models/'
+  BBOX_FILE: '/cvlabdata2/cvlab/datasets_federico/Datasets/physic_overlay/Repere_2.0_37/bbox.json'
+  MESH_DIAMETERS: [64.98]
+  SYMMETRY_TYPES: {}
+  N_CLASS: 2
+INPUT: # dimensions multiplied by 2 to increase performance
+  INTERNAL_WIDTH: 960
+  INTERNAL_HEIGHT: 540
+  INTERNAL_K: [520.72, 0, 470.412, 0, 517.92, 265.412, 0, 0, 1]
+SOLVER:
+  IMS_PER_BATCH: 20
+  #
+  BASE_LR: 0.001
+  MAX_ITER: 200000
+  #
+  LOSS_WEIGHT_CLS: 0.1
+  # LOSS_WEIGHT_REG: 0.01
+  # LOSS_REG_TYPE: '2D'
+  LOSS_WEIGHT_REG: 1
+  LOSS_REG_TYPE: '3D'
+  POSITIVE_TYPE: 'SSC'
+  POSITIVE_LAMBDA: 1.0
+  REGRESSION_TYPE: 'POINT'
+  AUGMENTATION_SHIFT: 0
+  AUGMENTATION_SCALE: 0
+  AUGMENTATION_ROTATION: 0
+  AUGMENTATION_ColorH: 0.2
+  AUGMENTATION_ColorS: 0.5
+  AUGMENTATION_ColorV: 0.5
+  AUGMENTATION_Sharpen: 0
+  AUGMENTATION_Smooth: 5
+  AUGMENTATION_Noise: 0.1
+#  #AUGMENTATION_Noise: 0.1
+#  #AUGMENTATION_Smooth: 2.0
+  AUGMENTATION_OCCLUSION: 0.8
+  AUGMENTATION_BACKGROUND_DIR: './data/SUN2012pascalformat/JPEGImages/'
+TEST:
+  IMS_PER_BATCH: 8
+  CONFIDENCE_TH: 0.1
